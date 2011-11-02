@@ -1,121 +1,121 @@
-Array.prototype._index = (index) ->
+Array::_index = (index) ->
   if index < 0
     length = @length
     return length + index
   index
 
-Array.prototype.at = (index) ->
+Array::at = (index) ->
   @[@_index index]
 
-Array.prototype.map = (func) ->
+Array::map = (func) ->
   @[0...@length] = (func value for value in @)
 
-Array.prototype.clone = () ->
+Array::clone = () ->
   @dup()
 
-Array.prototype.dup = () ->
+Array::dup = () ->
   @[0...@length]
 
-Array.prototype.each = (func) ->
+Array::each = (func) ->
   (func value for value in @)
   @
 
-Array.prototype.eachIndex = (func) ->
+Array::eachIndex = (func) ->
   (func index for index in [0...@length])
   @
 
-Array.prototype.eachWithIndex = (func) ->
+Array::eachWithIndex = (func) ->
   (func @[index], index for index in [0...@length])
   @
 
-Array.prototype.deleteAt = (index) ->
+Array::deleteAt = (index) ->
   index = @_index(index)
   if index >= @length
     return undefined
   @splice index, 1
 
-Array.prototype.deleteIf = (func) ->
+Array::deleteIf = (func) ->
   for index in [0...@length]
     if func @[index]
       @deleteAt index
   @
 
-Array.prototype.reject = (func) ->
+Array::reject = (func) ->
   before = @length
   @deleteIf func
   if before is @length
     return undefined
   @
 
-Array.prototype.isEmpty = ->
+Array::isEmpty = ->
   @length is 0
 
-Array.prototype.isEql = (other) ->
+Array::isEql = (other) ->
   return false if @length isnt other.length
   for index in [0...@length]
     if @[index] isnt other[index]
       return false
   true
 
-Array.prototype.fill = (val, start=0, end=@length-1) ->
+Array::fill = (val, start=0, end=@length-1) ->
   start = @_index(start)
   end = @_index(end)
   @[start...end] = (val for i in [start...end])
   @
 
-Array.prototype.first = ->
+Array::first = ->
   @[0]
 
-Array.prototype.last = ->
+Array::last = ->
   last = @_index -1
   @[last]
 
-Array.prototype.uniq = ->
+Array::uniq = ->
   for elem in @
     @deleteIf (val, index) -> 
       val is elem
   @
 
-Array.prototype.index = (value) ->
+Array::index = (value) ->
   for index in [0...@length]
     if @[index] is value
       return index
   undefined
 
-Array.prototype.indexes = ->
+Array::indexes = ->
   (@at(index) for index in arguments)
   
-Array.prototype.rindex = (value) ->
+Array::rindex = (value) ->
   for index in [@length...0]
     if @[index] is value
       return index
   undefined
 
-Array.prototype.flatten = ->
+Array::flatten = ->
   @
 
-Array.prototype.zip = (array) ->
+Array::zip = (array) ->
   size = Math.max(@length, array.length)
   ([@[index], array[index]] for index in [0...size])
 
 
-Array.prototype.transpose = ->
+Array::transpose = ->
   @
 
-Array.prototype.compact = ->
+Array::compact = ->
   @deleteIf (value) ->
     value is undefined
 
-Array.prototype.isInclude = (val) ->
+Array::isInclude = (val) ->
   for elem in @
     if elem is val
       return true
   false
 
-Array.prototype.size = ->
+Array::size = ->
   @length
 
-Array.prototype.swap = (a, b) ->
+Array::swap = (a, b) ->
   a = @_index a
   b = @_index b
   tmp = @[a]
@@ -123,52 +123,52 @@ Array.prototype.swap = (a, b) ->
   @[b] = tmp
   @
 
-Array.prototype.shuffle = ->
+Array::shuffle = ->
   for i in [0...@length]
     @swap(i, Math.floor(Math.random() * @length))
   @
 
-Array.prototype.choice = ->
+Array::choice = ->
   @[Math.floor(Math.random() * @length)]
 
-Array.prototype.count = (val) ->
+Array::count = (val) ->
   sum = 0
   for elem in @
     if elem is val
       ++sum
   sum
 
-Array.prototype.countIf = (func) ->
+Array::countIf = (func) ->
   sum = 0
   for index in [0...@length]
     if func(@[index], index)
       ++sum
   sum
 
-Array.prototype.replace = (other) ->
+Array::replace = (other) ->
   @clear
   for i in [0...other.length]
     @[i] = other[i]
   @
 
-Array.prototype.nitems = ->
+Array::nitems = ->
   @clone().compact().size()
 
-Array.prototype.insert = (value, index) ->
+Array::insert = (value, index) ->
   @
 
-Array.prototype.clear = ->
+Array::clear = ->
   @deleteIf ->
     true
 
-Array.prototype.max = ->
+Array::max = ->
   max = @first()
   for value in @
     if value > max
       max = value
   max
 
-Array.prototype.min = ->
+Array::min = ->
   min = @first()
   for value in @
     if value < min
