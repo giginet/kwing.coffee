@@ -17,6 +17,10 @@ module.exports.testArray = {
     a.deleteIf (v) ->
       v % 2 == 0
     test.deepEqual(a, [1, 3, 5, 7, 9])
+    b = [0...10]
+    b.deleteIf (v) ->
+      v % 3 != 0
+    test.deepEqual(b, [0, 3, 6, 9])
     test.done()
   testFirst : (test) ->
     test.equal(@array.first(), 0)
@@ -33,11 +37,12 @@ module.exports.testArray = {
     test.deepEqual(array2, [1, 2, 99, 99, 5])
     test.done()
   testUniq : (test) ->
-    @array.uniq()
-    test.deepEqual(@array, [1...100])
-    array = [7, 1, 1, 3, 5, 3, 7, 9, 1]
+    array = [0...10]
     array.uniq()
-    test.deepEqual(array, [1, 3, 5, 7, 9])
+    test.deepEqual(array, [0...10])
+    array2 = [7, 1, 1, 3, 5, 3, 7, 9, 1]
+    array2.uniq()
+    test.deepEqual(array2, [7, 1, 3, 5, 9])
     test.done()
   testFlatten : (test) ->
     array = [490, [50, 600], [40, 30]]
@@ -56,13 +61,26 @@ module.exports.testArray = {
     array = [0...5]
     array.insert(3, 99)
     test.deepEqual(array, [0, 1, 2, 99, 3, 4])
+    array = [0...5]
     array.insert(1, 20, 30, 40, 50)
-    test.deepEqual(0, 20, 30, 40, 50, 1, 2, 3, 4)
+    test.deepEqual(array, [0, 20, 30, 40, 50, 1, 2, 3, 4])
     test.done()
   testMap : (test) ->
     array = [5, 7, 9, 11]
     array.map (v, i) ->
       v * v
     test.deepEqual(array, [25, 49, 81, 121])
+    test.done()
+  testIndexes : (test) ->
+    array = @array.indexes(10, 20, 30)
+    test.deepEqual(array, [10, 20, 30])
+    test.done()
+  testClear : (test) ->
+    @array.clear()
+    test.deepEqual(@array, [])
+    test.done()
+  testReplace : (test) ->
+    @array.replace([10, 20, 3])
+    test.deepEqual(@array, [10, 20, 3])
     test.done()
 }
