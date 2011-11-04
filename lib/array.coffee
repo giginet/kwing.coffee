@@ -60,7 +60,7 @@ Array::isEql = (other) ->
 Array::fill = (val, start=0, end=@length-1) ->
   start = @_index(start)
   end = @_index(end)
-  @[start...end] = (val for i in [start...end])
+  @[start..end] = (val for i in [start..end])
   @
 
 Array::first = ->

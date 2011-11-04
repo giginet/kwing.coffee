@@ -6,6 +6,9 @@ module.exports.testArray = {
     callback()
   tearDown : (callback) ->
     callback()
+  testAt : (test) ->
+    test.equal(@array.at(-2), 98)
+    test.done()
   testSize : (test) ->
     test.equal @array.size(), 100
     test.done();
@@ -17,5 +20,49 @@ module.exports.testArray = {
     test.done()
   testFirst : (test) ->
     test.equal(@array.first(), 0)
+    test.done()
+  testLast : (test) ->
+    test.equal(@array.last(), 99)
+    test.done()
+  testFill : (test) ->
+    array = [1, 2, 3]
+    array.fill(50)
+    test.deepEqual(array, [50, 50, 50])
+    array2 = [1, 2, 3, 4, 5]
+    array2.fill(99, 2, 3)
+    test.deepEqual(array2, [1, 2, 99, 99, 5])
+    test.done()
+  testUniq : (test) ->
+    @array.uniq()
+    test.deepEqual(@array, [1...100])
+    array = [7, 1, 1, 3, 5, 3, 7, 9, 1]
+    array.uniq()
+    test.deepEqual(array, [1, 3, 5, 7, 9])
+    test.done()
+  testFlatten : (test) ->
+    array = [490, [50, 600], [40, 30]]
+    array.flatten()
+    test.deepEqual(array, [490, 50, 600, 40, 30])
+    array2 = [420, [30, [30, 20, 50, [100, 100]], 10], [30]]
+    array2.flatten()
+    test.deepEqual(array2, [420, 30, 30, 20, 50, 100, 100, 10, 30])
+    test.done()
+  testTranspose : (test) ->
+    array = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    array.transpose()
+    test.deepEqual(array, [[1, 4, 7], [2, 5, 6], [3, 6, 9]])
+    test.done()
+  testInsert : (test) ->
+    array = [0...5]
+    array.insert(3, 99)
+    test.deepEqual(array, [0, 1, 2, 99, 3, 4])
+    array.insert(1, 20, 30, 40, 50)
+    test.deepEqual(0, 20, 30, 40, 50, 1, 2, 3, 4)
+    test.done()
+  testMap : (test) ->
+    array = [5, 7, 9, 11]
+    array.map (v, i) ->
+      v * v
+    test.deepEqual(array, [25, 49, 81, 121])
     test.done()
 }
