@@ -35,10 +35,7 @@ Array::deleteAt = (index) ->
   @splice index, 1
 
 Array::deleteIf = (func) ->
-  array = []
-  for i in [0...@length]
-    if !func(@[i], i)
-      array.push(@[i])
+  array = (@[i] for i in [0...@length] when not func(@[i], i))
   @replace(array)
 
 Array::reject = (func) ->
