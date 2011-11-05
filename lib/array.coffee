@@ -35,8 +35,7 @@ Array::deleteAt = (index) ->
   @splice index, 1
 
 Array::deleteIf = (func) ->
-  array = (@[i] for i in [0...@length] when not func(@[i], i))
-  @replace(array)
+  @replace (@[i] for i in [0...@length] when not func(@[i], i))
 
 Array::reject = (func) ->
   before = @length
@@ -97,11 +96,6 @@ Array::flatten = ->
   @replace(@reduce (a, b) ->
     return a.concat if b instanceof Array then b.flatten() else b
   ,[])
-
-Array::zip = (array) ->
-  size = Math.max(@length, array.length)
-  ([@[index], array[index]] for index in [0...size])
-
 
 Array::transpose = ->
   w = if @isEmpty() then 0 else @length
@@ -170,14 +164,12 @@ Array::nitems = ->
   @clone().compact().size()
 
 Array::insert = () ->
-  args = Array::slice.call(arguments, 0, arguments.length);
+  args = Array::slice.call(arguments, 0, arguments.length)
   if args.size() <= 1
     return @
   index = args[0]
   values = args[1...@length]
-  oldLength = @length
-  newLength = oldLength + values.size()
-  @[0...newLength] = @[0...index].concat(values).concat(@[index...newLength])
+  (@splice(index + i, 0, values[i]) for i in [0...values.length])
   @
 
 Array::clear = ->
