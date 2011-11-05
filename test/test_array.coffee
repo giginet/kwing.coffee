@@ -86,4 +86,24 @@ module.exports.testArray = {
     @array.replace([10, 20, 3])
     test.deepEqual(@array, [10, 20, 3])
     test.done()
+  testMax : (test) ->
+    test.equal(@array.max(), 99)
+    array = ({number : i * 2 } for i in [0...100])
+    result = array.max (a, b) ->
+      return 0 if a.number is b.number
+      if a.number < b.number then -1 else 1
+    test.equal(result, array.last())
+    array2 = [10, 5109, 59, -100, 30, 460]
+    test.equal(array2.max(), 5109)
+    test.done()
+  testMin : (test) ->
+    test.equal(@array.min(), 0)
+    array = ({number : i * 2 } for i in [0...100])
+    result = array.min (a, b) ->
+      return 0 if a.number is b.number
+      return if a.number < b.number then -1 else 1
+    test.equal(result, array.first())
+    array2 = [10, 5109, 59, -100, 30, 460]
+    test.equal(array2.min(), -100)
+    test.done()
 }

@@ -177,16 +177,20 @@ Array::clear = ->
     @deleteAt 0
   @
 
-Array::max = ->
-  max = @first()
-  for value in @
-    if value > max
-      max = value
-  max
+Array::max = (cmp) ->
+  cmp or= (a, b) ->
+    return 0 if a is b
+    if a < b then -1 else 1
+  result = @first()
+  @reduce (a, b) ->
+    result = b if cmp(result, b) < 0
+  result
 
-Array::min = ->
-  min = @first()
-  for value in @
-    if value < min
-      min = value
-  min
+Array::min = (cmp) ->
+  cmp or= (a, b) ->
+    return 0 if a is b
+    if a < b then -1 else 1
+  result = @first()
+  @reduce (a, b) ->
+    result = b if cmp(result, b) >= 0
+  result
