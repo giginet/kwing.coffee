@@ -94,7 +94,9 @@ Array::rindex = (value) ->
   undefined
 
 Array::flatten = ->
-  @
+  @replace(@reduce (a, b) ->
+    return a.concat if b instanceof Array then b.flatten() else b
+  ,[])
 
 Array::zip = (array) ->
   size = Math.max(@length, array.length)
@@ -102,7 +104,15 @@ Array::zip = (array) ->
 
 
 Array::transpose = ->
-  @
+  w = if @isEmpty() then 0 else @length
+  h = if @first() instanceof Array then @first().length else 0
+  if not w or not h
+    return @
+  t = ([] for i in [0...h])
+  for x in [0...w]
+    for y in [0...h]
+      t[y][x] = @[x][y]
+  @replace t
 
 Array::compact = ->
   @deleteIf (value) ->

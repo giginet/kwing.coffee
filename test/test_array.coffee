@@ -55,7 +55,10 @@ module.exports.testArray = {
   testTranspose : (test) ->
     array = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     array.transpose()
-    test.deepEqual(array, [[1, 4, 7], [2, 5, 6], [3, 6, 9]])
+    test.deepEqual(array, [[1, 4, 7], [2, 5, 8], [3, 6, 9]])
+    array2 = [[1, 3, 5, 7], [9, 11, 13, 15], [17, 19, 21, 22]]
+    array2.transpose()
+    test.deepEqual(array2, [[1, 9, 17], [3, 11, 19], [5, 13, 21], [7, 15, 22]])
     test.done()
   testInsert : (test) ->
     array = [0...5]
