@@ -70,18 +70,22 @@ Array::uniq = (eql = (a, b) ->
       array.push(val)
   @replace(array)
 
-Array::index = (value) ->
+Array::index = (value, eql = (a, b) ->
+  a is b
+) ->
   for index in [0...@length]
-    if @[index] is value
+    if eql(@[index], value)
       return index
   undefined
 
 Array::indexes = ->
   (@at(index) for index in arguments)
   
-Array::rindex = (value) ->
+Array::rindex = (value, eql = (a, b) ->
+  a is b
+) ->
   for index in [@length...0]
-    if @[index] is value
+    if eql(@[index], value)
       return index
   undefined
 
