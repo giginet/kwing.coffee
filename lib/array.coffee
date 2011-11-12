@@ -17,14 +17,6 @@ Array::dup = () ->
   @[0...@length]
 
 Array::each = (func) ->
-  (func value for value in @)
-  @
-
-Array::eachIndex = (func) ->
-  (func index for index in [0...@length])
-  @
-
-Array::eachWithIndex = (func) ->
   (func @[index], index for index in [0...@length])
   @
 
@@ -47,10 +39,12 @@ Array::reject = (func) ->
 Array::isEmpty = ->
   @length is 0
 
-Array::isEql = (other) ->
+Array::isEql = (other, eql = (a, b) ->
+  a is b  
+) ->
   return false if @length isnt other.length
   for index in [0...@length]
-    if @[index] isnt other[index]
+    if not eql(@[index], other[index])
       return false
   true
 
@@ -67,10 +61,9 @@ Array::last = ->
   last = @_index -1
   @[last]
 
-Array::uniq = (eql) ->
-  if eql is undefined
-    eql = (a, b) ->
-      a is b
+Array::uniq = (eql = (a, b) ->
+  a is b
+) ->
   array = []
   for val in @
     if not array.isInclude(val, eql)
@@ -112,10 +105,9 @@ Array::compact = ->
   @deleteIf (value) ->
     value is undefined
 
-Array::isInclude = (val, eql) ->
-  if eql is undefined
-    eql = (a, b) -> 
-      a is b
+Array::isInclude = (val, eql = (a, b) ->
+  a is b
+) ->
   for elem in @
     if eql(elem, val)
       return true
@@ -140,17 +132,12 @@ Array::shuffle = ->
 Array::choice = ->
   @[Math.floor(Math.random() * @length)]
 
-Array::count = (val) ->
-  sum = 0
-  for elem in @
-    if elem is val
-      ++sum
-  sum
-
-Array::countIf = (func) ->
+Array::count = (val, eql = (a, b) ->
+  a is b
+) ->
   sum = 0
   for index in [0...@length]
-    if func(@[index], index)
+    if eql(@[index], index)
       ++sum
   sum
 
@@ -174,22 +161,21 @@ Array::insert = () ->
 
 Array::clear = ->
   while not @isEmpty()
-    @deleteAt 0
-  @
+      @deleteAt 0
 
-Array::max = (cmp) ->
-  cmp or= (a, b) ->
-    return 0 if a is b
-    if a < b then -1 else 1
+Array::max = (cmp = (a, b) ->
+  return 0 if a is b
+  if a < b then -1 else 1
+) ->
   result = @first()
   @reduce (a, b) ->
     result = b if cmp(result, b) < 0
   result
 
-Array::min = (cmp) ->
-  cmp or= (a, b) ->
-    return 0 if a is b
-    if a < b then -1 else 1
+Array::min = (cmp = (a,b ) ->
+  return 0 if a is b
+  if a < b then -1 else 1
+) ->
   result = @first()
   @reduce (a, b) ->
     result = b if cmp(result, b) >= 0
