@@ -137,7 +137,7 @@ Array::count = (val, eql = (a, b) ->
 ) ->
   sum = 0
   for index in [0...@length]
-    if eql(@[index], index)
+    if eql(@[index], val)
       ++sum
   sum
 
@@ -154,7 +154,7 @@ Array::insert = () ->
   args = Array::slice.call(arguments, 0, arguments.length)
   if args.size() <= 1
     return @
-  index = args[0]
+  index = @_index args[0]
   values = args[1...@length]
   (@splice(index + i, 0, values[i]) for i in [0...values.length])
   @
