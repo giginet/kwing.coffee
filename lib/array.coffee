@@ -17,14 +17,6 @@ Array::dup = () ->
   @[0...@length]
 
 Array::each = (func) ->
-  (func value for value in @)
-  @
-
-Array::eachIndex = (func) ->
-  (func index for index in [0...@length])
-  @
-
-Array::eachWithIndex = (func) ->
   (func @[index], index for index in [0...@length])
   @
 
@@ -47,10 +39,12 @@ Array::reject = (func) ->
 Array::isEmpty = ->
   @length is 0
 
-Array::isEql = (other) ->
+Array::isEql = (other, eql = (a, b) ->
+  a is b  
+) ->
   return false if @length isnt other.length
   for index in [0...@length]
-    if @[index] isnt other[index]
+    if not eql(@[index], other[index])
       return false
   true
 
@@ -67,28 +61,31 @@ Array::last = ->
   last = @_index -1
   @[last]
 
-Array::uniq = (eql) ->
-  if eql is undefined
-    eql = (a, b) ->
-      a is b
+Array::uniq = (eql = (a, b) ->
+  a is b
+) ->
   array = []
   for val in @
     if not array.isInclude(val, eql)
       array.push(val)
   @replace(array)
 
-Array::index = (value) ->
+Array::index = (value, eql = (a, b) ->
+  a is b
+) ->
   for index in [0...@length]
-    if @[index] is value
+    if eql(@[index], value)
       return index
   undefined
 
 Array::indexes = ->
   (@at(index) for index in arguments)
   
-Array::rindex = (value) ->
+Array::rindex = (value, eql = (a, b) ->
+  a is b
+) ->
   for index in [@length...0]
-    if @[index] is value
+    if eql(@[index], value)
       return index
   undefined
 
@@ -112,10 +109,9 @@ Array::compact = ->
   @deleteIf (value) ->
     value is undefined
 
-Array::isInclude = (val, eql) ->
-  if eql is undefined
-    eql = (a, b) -> 
-      a is b
+Array::isInclude = (val, eql = (a, b) ->
+  a is b
+) ->
   for elem in @
     if eql(elem, val)
       return true
@@ -140,17 +136,12 @@ Array::shuffle = ->
 Array::choice = ->
   @[Math.floor(Math.random() * @length)]
 
-Array::count = (val) ->
-  sum = 0
-  for elem in @
-    if elem is val
-      ++sum
-  sum
-
-Array::countIf = (func) ->
+Array::count = (val, eql = (a, b) ->
+  a is b
+) ->
   sum = 0
   for index in [0...@length]
-    if func(@[index], index)
+    if eql(@[index], val)
       ++sum
   sum
 
@@ -167,29 +158,28 @@ Array::insert = () ->
   args = Array::slice.call(arguments, 0, arguments.length)
   if args.size() <= 1
     return @
-  index = args[0]
+  index = @_index args[0]
   values = args[1...@length]
   (@splice(index + i, 0, values[i]) for i in [0...values.length])
   @
 
 Array::clear = ->
   while not @isEmpty()
-    @deleteAt 0
-  @
+      @deleteAt 0
 
-Array::max = (cmp) ->
-  cmp or= (a, b) ->
-    return 0 if a is b
-    if a < b then -1 else 1
+Array::max = (cmp = (a, b) ->
+  return 0 if a is b
+  if a < b then -1 else 1
+) ->
   result = @first()
   @reduce (a, b) ->
     result = b if cmp(result, b) < 0
   result
 
-Array::min = (cmp) ->
-  cmp or= (a, b) ->
-    return 0 if a is b
-    if a < b then -1 else 1
+Array::min = (cmp = (a,b ) ->
+  return 0 if a is b
+  if a < b then -1 else 1
+) ->
   result = @first()
   @reduce (a, b) ->
     result = b if cmp(result, b) >= 0

@@ -67,6 +67,9 @@ module.exports.testArray = {
     array = [0...5]
     array.insert(1, 20, 30, 40, 50)
     test.deepEqual(array, [0, 20, 30, 40, 50, 1, 2, 3, 4])
+    array = [0...5]
+    array.insert(-4, 20, 30, 40, 50)
+    test.deepEqual(array, [0, 20, 30, 40, 50, 1, 2, 3, 4])
     test.done()
   testMap : (test) ->
     array = [5, 7, 9, 11]
@@ -105,5 +108,28 @@ module.exports.testArray = {
     test.equal(result, array.first())
     array2 = [10, 5109, 59, -100, 30, 460]
     test.equal(array2.min(), -100)
+    test.done()
+  testSwap : (test) ->
+    array = [0...5]
+    array.swap(0, 1)
+    test.deepEqual(array, [1, 0, 2, 3, 4])
+    array = [0...5]
+    array.swap(-1, 1)
+    test.deepEqual(array, [0, 4, 2, 3, 1])
+    test.done()
+  testCount : (test) ->
+    array = [0, 0, 1, 2, 3, 4, 5, 6, 1]
+    test.equal(array.count(0), 2)
+    array2 = ({hoge : i} for i in [0...100])
+    for i in [0...10]
+      array2.push({ hoge : 10 })
+    test.equal(array2.count(10, (a, val) ->
+      a.hoge is val
+    ), 11)
+    test.done()
+  testShuffle : (test) ->
+    array = []
+    array.shuffle()
+    test.deepEqual(array, [])
     test.done()
 }
