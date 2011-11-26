@@ -18,6 +18,9 @@ class Timer
   pause : ->
     @_active = false
     @
+  reset : ->
+    @_time = 0
+    @
   tick : ->
     if @_time < @_max and @_active
       ++@_time
@@ -35,3 +38,7 @@ class Timer
   setRepeat : (repeat) ->
     @_repeat = repeat
     @
+  isActive : ->
+    return @_active
+  isOver : ->
+    return @_time >= @_max
