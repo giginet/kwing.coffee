@@ -5,8 +5,7 @@ class Timer
     @_active = active
     @_complete = complete
     @_repeat = repeat
-  set : (max) ->
-    max ?= 0
+  set : (max=0) ->
     @_max = max
     @
   play : ->
@@ -23,15 +22,15 @@ class Timer
     if @_time < @_max and @_active
       ++@_time
       if @_time is @_max
-        unless complete?
+        if @_complete?
           @_complete()
         if @_repeat
           @_time = 0
     @
   now : ->
-    return time
+    return @_time
   setComplete : (func) ->
-    @_complete = typeof(func) is Function ? func : undefined
+    @_complete = func
     @
   setRepeat : (repeat) ->
     @_repeat = repeat
