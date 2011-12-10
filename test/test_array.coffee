@@ -1,6 +1,6 @@
 require('../lib/array')
 
-module.exports.testArray = {
+exports.testArray = {
   setUp : (callback) ->
     @array = [0...100]
     callback()

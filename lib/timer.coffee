@@ -31,7 +31,11 @@ class Timer
           @_time = 0
     @
   now : ->
-    return @_time
+    @_time
+  max : ->
+    @_max
+  setNow : (@_time) ->
+    @
   setComplete : (func) ->
     @_complete = func
     @
@@ -39,6 +43,6 @@ class Timer
     @_repeat = repeat
     @
   isActive : ->
-    return @_active
+    @_active
   isOver : ->
-    return @_time >= @_max
+    @_time >= @_max
