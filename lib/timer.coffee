@@ -3,7 +3,8 @@ class Timer
     @set(max)
     @_time = time
     @_active = active
-    @_complete = complete
+    @_onComplete = complete
+    @_onUpdate = undefined
     @_repeat = repeat
   set : (max=0) ->
     @_max = max
@@ -24,9 +25,11 @@ class Timer
   tick : ->
     if @_time < @_max and @_active
       ++@_time
+      if @_onUpdate?
+        @_onUpdate(@)
       if @_time is @_max
-        if @_complete?
-          @_complete()
+        if @_onComplete?
+          @_onComplete(@)
         if @_repeat
           @_time = 0
     @
@@ -36,9 +39,12 @@ class Timer
     @_max
   setNow : (@_time) ->
     @
-  setComplete : (func) ->
-    @_complete = func
+  setOnComplete : (func) ->
+    @_onComplete = func
     @
+  setOnUpdate : (func) ->
+    @_onUpdate = func
+
   setRepeat : (repeat) ->
     @_repeat = repeat
     @
